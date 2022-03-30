@@ -110,7 +110,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         # f.write(b"<hr>\n")
         if len(plist) > 2 and plist[1] == "delete":
             result = plist[2]
-            print("ready delete file===",result)
+            # print("ready delete file===",result)
             if os.path.exists(result):
                 print("delete file===",result)
                 dirn = os.path.dirname(result)
@@ -179,7 +179,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             f.write(b"<strong>Failed:</strong><br>")
 
         for i in info:
-            print(r, i, "by: ", self.client_address)
+            # print(r, i, "by: ", self.client_address)
             f.write(i.encode('utf-8')+b"<br>")
         f.write(b"<br><a href=\"%s\">back</a>" % self.headers['referer'].encode('ascii'))
         #f.write(b"<hr><small>Powered By: freelamb, check new version at ")
@@ -205,7 +205,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             # print start1
             if start1 > -1:
                 str1 = var[start1 + 2:start1 + 4]
-                print(str1)
+                # print(str1)
                 start2 = var[start1 + 4:].find("\\x") + start1 + 4
                 if start2 > -1:
                     str2 = var[start2 + 2:start2 + 4]
@@ -228,9 +228,9 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def deal_post_data(self):
         boundary = self.headers["Content-Type"].split("=")[1].encode('ascii')
-        print("boundary===", boundary)
+        # print("boundary===", boundary)
         remain_bytes = int(self.headers['content-length'])
-        print("remain_bytes===", remain_bytes)
+        # print("remain_bytes===", remain_bytes)
 
         res = []
         line = self.rfile.readline()
@@ -242,7 +242,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
                 return False, "Content NOT begin with boundary"
             line = self.rfile.readline()
             remain_bytes -= len(line)
-            print("line!!!",line)
+            # print("line!!!",line)
             fn = re.findall(r'Content-Disposition.*name="file"; filename="(.*)"', str(line))
             if not fn:
                 return False, "Can't find out file name..."
@@ -251,12 +251,12 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             fname = fn[0]
             #fname = fname.replace("\\", "\\\\")
             fname = self.str_to_chinese(fname)
-            print("------",fname)
+            # print("------",fname)
             
             fn = os.path.join(path, fname)
             while os.path.exists(fn):
                 fn += "_"
-            print("!!!!",fn)
+            # print("!!!!",fn)
             dirname = os.path.dirname(fn)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
@@ -271,13 +271,13 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
                 return False, "Can't create file to write, do you have permission to write?"
 
             pre_line = self.rfile.readline()
-            print("pre_line", pre_line)
+            # print("pre_line", pre_line)
             remain_bytes -= len(pre_line)
-            print("remain_bytes", remain_bytes)
+            # print("remain_bytes", remain_bytes)
             Flag = True
             while remain_bytes > 0:
                 line = self.rfile.readline()
-                print("while line", line)
+                # print("while line", line)
                 
                 if boundary in line:
                     remain_bytes -= len(line)
